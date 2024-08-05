@@ -1,0 +1,36 @@
+[project]
+name = "unet"
+version = "0.1.0"
+description = "Add your description here"
+authors = [
+    { name = "dango", email = "74799676+dango89emo@users.noreply.github.com" }
+]
+dependencies = [
+    "torch>=2.4.0",
+    "numpy>=2.0.1",
+    "torchvision>=0.19.0",
+    "matplotlib>=3.9.0",
+    "tqdm>=4.66.5",
+    "google-images-download>=2.8.0",
+    "pillow>=10.4.0",
+    "beautifulsoup4>=4.12.3",
+    "requests>=2.32.3",
+    "pytorch-lightning>=2.3.3",
+    "wandb>=0.17.5",
+]
+readme = "README.md"
+requires-python = ">= 3.8"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = []
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/unet"]
