@@ -22,7 +22,7 @@ class Diffuser:
         alpha_bar = alpha_bar.view(N,1,1,1)
 
         noise = torch.randn_like(x_0, device=self.device)
-        x_t = torch.sqrt(alpha_bar) * x_0 + torch.sqrt(1-alpha_bar) * noise
+        x_t = torch.sqrt(alpha_bar) * x_0 + torch.sqrt(1 - alpha_bar) * noise
         return x_t, noise
 
     def denoise(self, model, x, t):
@@ -35,9 +35,9 @@ class Diffuser:
         alpha_bar_prev = self.alpha_bars[t_idx-1]
         
         N = alpha.size(0)
-        alpha = alpha.view(N,3,1,1)
-        alpha_bar = alpha_bar.view(N,3,1,1)
-        alpha_bar_prev = alpha_bar_prev.view(N,3,1,1)
+        alpha = alpha.view(N,1,1,1)
+        alpha_bar = alpha_bar.view(N,1,1,1)
+        alpha_bar_prev = alpha_bar_prev.view(N,1,1,1)
 
         model.eval()
         with torch.no_grad():
@@ -54,10 +54,11 @@ class Diffuser:
         x = x.clamp(0, 255)
         x = x.to(torch.uint8)
         x = x.cpu()
-        to_pil = transforms.ToPILImage()
-        return to_pil(x)
+        image = x / 2 + 0.5
+        image = np.transpose(image, (1, 2, 0))
+        return image
 
-    def sample(self, model, x_shape=(20,1,28,28)):
+    def sample(self, model, x_shape=(20,3,28,28)):
         batch_size = x_shape[0]
         x = torch.randn(x_shape, device=self.device)
         for i in tqdm(range(self.num_timesteps, 0, -1)):

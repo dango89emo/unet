@@ -11,11 +11,12 @@ from src.unet.model import UNet
 from src.data.deer import get_deer_dataloaders
 from src.unet.diffuser import Diffuser
 
+
 class LightningModule(pl.LightningModule):
     def __init__(self):
         super().__init__()
-        self.model = UNet()
-        self.num_timesteps = 1000
+        self.model = UNet(in_ch=3)
+        self.num_timesteps = 10000
         self.device_name = 'mps'
         self.diffuser = Diffuser(self.num_timesteps, device=self.device_name) 
 
@@ -66,7 +67,7 @@ def main():
 
     # トレーナーの設定と学習の実行
     trainer = pl.Trainer(
-        max_epochs=10,
+        max_epochs=100,
         logger=wandb_logger,
         callbacks=[checkpoint_callback]
     )
